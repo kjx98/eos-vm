@@ -7,5 +7,8 @@ target_link_libraries(eos-vm-interp eos-vm)
 add_executable(bench-interp ${CMAKE_CURRENT_SOURCE_DIR}/bench_interp.cpp)
 target_link_libraries(bench-interp eos-vm)
 
+add_executable(ewasm-interp ${CMAKE_CURRENT_SOURCE_DIR}/ewasm_interp.cpp)
+target_link_libraries(ewasm-interp eos-vm)
+
 add_executable(hello-driver ${CMAKE_CURRENT_SOURCE_DIR}/hello_driver.cpp)
 target_link_libraries(hello-driver eos-vm)

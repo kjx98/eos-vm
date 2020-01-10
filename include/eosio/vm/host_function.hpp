@@ -573,6 +573,10 @@ namespace eosio { namespace vm {
             EOS_VM_ASSERT(current_mappings.named_mapping.count({ mod_name, fn_name }), wasm_link_exception,
                           "no mapping for imported function");
             imports[i] = current_mappings.named_mapping[{ mod_name, fn_name }];
+#ifdef	NDEBUG
+			std::cerr << "module: " << mod_name << " func: " << fn_name
+					<< " import host func idx: " << imports[i] << std::endl;
+#endif
          }
       }
 
