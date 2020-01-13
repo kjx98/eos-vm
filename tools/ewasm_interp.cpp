@@ -56,12 +56,15 @@ struct ewasm_host_methods {
    std::string  field = "";
 };
 
+static char	inputs[4+32]="test";
 int main(int argc, char** argv) {
    wasm_allocator wa;
    using backend_t = eosio::vm::backend<ewasm_host_methods, eosio::vm::jit>;
-   // using backend_t = eosio::vm::backend<ewasm_host_methods>;
+   //using backend_t = eosio::vm::backend<ewasm_host_methods>;
    using rhf_t = eosio::vm::registered_host_functions<ewasm_host_methods>;
-   ewasm_host_methods myHost{ "test" };
+   inputs[4+31] = 15;
+   std::string	in_(inputs, sizeof(inputs));
+   ewasm_host_methods myHost{ in_ };
 
    if (argc < 2) {
       std::cerr << "Error, no wasm file provided\n";
@@ -96,7 +99,7 @@ int main(int argc, char** argv) {
                 << "\n";
       t3 = std::chrono::high_resolution_clock::now();
 #ifdef NDEBUG
-      for (int i = 0; i < 100; ++i)
+      for (int i = 0; i < 400; ++i)
 #endif
       {
          try {
