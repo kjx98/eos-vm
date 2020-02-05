@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
       auto      t1 = std::chrono::high_resolution_clock::now();
       backend_t bkend(code);
       auto      t2 = std::chrono::high_resolution_clock::now();
-      std::cout << "Startup " << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() << "\n";
+      std::cout << "Startup " << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() << " ns\n";
 
       bkend.set_wasm_allocator(&wa);
 
@@ -95,8 +95,7 @@ int main(int argc, char** argv) {
       bkend.get_module().finalize();
       bkend.initialize();
       auto t32 = std::chrono::high_resolution_clock::now();
-      std::cout << "Resolv module import " << std::chrono::duration_cast<std::chrono::nanoseconds>(t32 - t3).count()
-                << "\n";
+      std::cout << "Resolv module import " << std::chrono::duration_cast<std::chrono::nanoseconds>(t32 - t3).count() << " ns\n";
       t3 = std::chrono::high_resolution_clock::now();
 #ifdef NDEBUG
       for (int i = 0; i < 400; ++i)
@@ -116,7 +115,11 @@ int main(int argc, char** argv) {
          }
       }
       auto t4 = std::chrono::high_resolution_clock::now();
-      std::cout << "Execution " << std::chrono::duration_cast<std::chrono::nanoseconds>(t4 - t3).count() << "\n";
+#ifdef NDEBUG
+      std::cout << "Execution " << std::chrono::duration_cast<std::chrono::nanoseconds>(t4 - t3).count() / 400 << " ns\n";
+#else
+      std::cout << "Execution " << std::chrono::duration_cast<std::chrono::nanoseconds>(t4 - t3).count() << " ns\n";
+#endif
 
    } catch (const eosio::vm::exception& ex) {
       auto t4 = std::chrono::high_resolution_clock::now();
