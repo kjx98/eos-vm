@@ -13,8 +13,10 @@ namespace eosio { namespace vm {
       max_call_depth        = 250,
       max_stack_size        = 8*1024,
       initial_module_size   = 1 * 1024 * 1024,
-      max_memory            = 4ull << 31,
-      max_useable_memory    = (33 * 1024 * 1024), //33mb
+      //max_memory            = 4ull << 31,
+      max_memory            = (32 * 1024 * 1024),
+      //max_useable_memory    = (33 * 1024 * 1024), //33mb
+      max_useable_memory    = (17 * 1024 * 1024), //33mb
       page_size             = 64ull * 1024, //64kb
       max_pages             = (max_useable_memory/page_size)
    };
