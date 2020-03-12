@@ -62,8 +62,9 @@ int main(int argc, char** argv) {
 
    watchdog wd{std::chrono::seconds(3)};
    try {
+	  std::basic_string_view<uint8_t> he_wasm(hello_wasm.data(), hello_wasm.size());
       // Instaniate a new backend using the wasm provided.
-      backend_t bkend(hello_wasm, rhf_t{});
+      backend_t bkend(he_wasm, rhf_t{});
 
       // Point the backend to the allocator you want it to use.
       bkend.set_wasm_allocator(&wa);

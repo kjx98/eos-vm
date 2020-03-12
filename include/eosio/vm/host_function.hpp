@@ -82,7 +82,7 @@ namespace eosio { namespace vm {
    template <typename T, std::size_t Align>
    struct aligned_ptr_wrapper {
       static_assert(Align % alignof(T) == 0, "Must align to at least the alignment of T");
-      aligned_ptr_wrapper(void* ptr) : ptr(ptr) {
+      aligned_ptr_wrapper(void* ptr_) : ptr(ptr_) {
         if (reinterpret_cast<std::uintptr_t>(ptr) % Align != 0) {
             copy = T{};
             memcpy( &(*copy), ptr, sizeof(T) );
@@ -109,7 +109,7 @@ namespace eosio { namespace vm {
    template <typename T, std::size_t Align>
    struct aligned_array_wrapper {
       static_assert(Align % alignof(T) == 0, "Must align to at least the alignment of T");
-      aligned_array_wrapper(void* ptr, uint32_t size) : ptr(ptr), size(size) {
+      aligned_array_wrapper(void* ptr_, uint32_t siz) : ptr(ptr_), size(siz) {
          if (reinterpret_cast<std::uintptr_t>(ptr) % Align != 0) {
             copy.reset(new std::remove_cv_t<T>[size]);
             memcpy( copy.get(), ptr, sizeof(T) * size );
@@ -566,13 +566,17 @@ namespace eosio { namespace vm {
       static void resolve(Module& mod) {
          auto& imports          = mod.import_functions;
          auto& current_mappings = get_mappings<wasm_allocator>();
-         for (int i = 0; i < mod.imports.size(); i++) {
+         for (unsigned int i = 0; i < mod.imports.size(); i++) {
             std::string mod_name =
                   std::string((char*)mod.imports[i].module_str.raw(), mod.imports[i].module_str.size());
             std::string fn_name = std::string((char*)mod.imports[i].field_str.raw(), mod.imports[i].field_str.size());
             EOS_VM_ASSERT(current_mappings.named_mapping.count({ mod_name, fn_name }), wasm_link_exception,
                           "no mapping for imported function");
             imports[i] = current_mappings.named_mapping[{ mod_name, fn_name }];
+#ifndef	NDEBUG
+			std::cerr << "module: " << mod_name << " func: " << fn_name
+					<< " import host func idx: " << imports[i] << std::endl;
+#endif
          }
       }
 

@@ -20,6 +20,7 @@ message(STATUS "Building eos-vm v${VERSION_FULL}...")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(USE_EXISTING_BOOST ON)
 
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 find_package(Threads)
@@ -37,7 +38,7 @@ endif()
 # ##################################################################################################
 include(CMakeDependentOption)
 option(ENABLE_SOFTFLOAT "enable the backend to use deterministic software floating point operations"
-	ON)
+	OFF)
 option(FULL_DEBUG_BUILD "enables stack dumping and instruction tracing" OFF)
 option(ENABLE_INSTALL "enable this library to be installed" ON)
 option(ENABLE_MEMORY_OPS_ALIGNMENT "enable the backend to obey alignment hints" OFF)
